@@ -355,12 +355,8 @@ NSString *const kMessagingPresentationOptionsUserDefaults =
   // this fix)
   NSString *notificationIdentifier = notification.request.identifier;
 
-  if (notification.request.content.userInfo[@"gcm.message_id"] &&
-      ![notificationIdentifier isEqualToString:_foregroundUniqueIdentifier]) {
-    NSDictionary *notificationDict =
-        [FLTFirebaseMessagingPlugin NSDictionaryFromUNNotification:notification];
-    [_channel invokeMethod:@"Messaging#onMessage" arguments:notificationDict];
-  }
+  NSDictionary *notificationDict = [FLTFirebaseMessagingPlugin NSDictionaryFromUNNotification:notification];
+  [_channel invokeMethod:@"Messaging#onMessage" arguments:notificationDict];
 
   // Forward on to any other delegates amd allow them to control presentation behavior.
   if (_originalNotificationCenterDelegate != nil &&
